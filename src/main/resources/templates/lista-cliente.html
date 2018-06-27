@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<meta charset="UTF-8">
+<title>Lista dos clientes</title>
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css">
+<script src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/style.css">
+
+</head>
+<body>
+
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" href="/produto/listar">CoinFoot</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
+			aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+			<div class="navbar-nav">
+				<a class="nav-item nav-link active" href="/produto/listar">Produtos
+					<span class="sr-only">(current)</span>
+				</a> <a sec:authorize="hasRole('USER')" class="nav-item nav-link"
+					href="/produto/historico">Histórico de compras</a> <a
+					sec:authorize="hasRole('USER')" class="nav-item nav-link"
+					href="/produto/carrinho">Carrinho</a><a
+					sec:authorize="!isAuthenticated()"
+					class="nav-item nav-link navbar-right" href="/cliente/logar">Login</a>
+				<a sec:authorize="!isAuthenticated()" class="nav-item nav-link navbar-right" href="/cliente/formulario">Se
+					Cadastrar</a> <a sec:authorize="isAuthenticated()"
+					class="nav-item nav-link navbar-right" href="/logout">Sair</a>
+			</div>
+		</div>
+	</nav>
+	<div class="alert alert-success" role="alert"
+		th:if=${!#strings.isEmpty(mensagem)}>
+		<span th:text="${mensagem}"></span>
+	</div>
+	<div class="container">
+	<div class=text-center><h1>LISTA DOS CLIENTES</h1><hr></div>
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col">Id</th>
+					<th scope="col">Nome</th>
+					<th scope="col">CPF</th>
+					<th scope="col">Data de nascimento</th>
+					<th scope="col">Endereço</th>
+					<th scope="col">Login</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="cliente : ${todosOsCliente}">
+					<td th:text="${cliente.id}"></td>
+					<td th:text="${cliente.nome}"></td>
+					<td th:text="${cliente.cpf}"></td>
+					<td th:text="${{cliente.nascimento}}"></td>
+					<td th:text="${{cliente.endereco}}"></td>
+					<td th:text="${{cliente.username}}"></td>
+					<td><a
+						th:href="@{/cliente/atualizar/{id}(id = ${cliente.id})}"><button
+								type="button" class="btn btn-outline-primary">Atualizar</button></a></td>
+					<td><a th:href="@{/cliente/excluir/{id}(id = ${cliente.id})}"><button
+								type="button" class="btn btn-outline-danger">Excluir</button></a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
